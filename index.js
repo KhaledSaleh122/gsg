@@ -27,7 +27,7 @@ app.get('/tasks/:id', (req, res, next) => {
   if (!isNaN(Number(id))){
     if(isIdExists(id)){
       const taskIndex = arr.findIndex((obj)=> obj.id === id);
-      res.end(JSON.stringify(arr[id]));
+      res.end(JSON.stringify(arr[taskIndex]));
       return;
     }
   }
