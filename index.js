@@ -42,7 +42,7 @@ app.put('/tasks/:id',(req,res)=>{
       if(name){
         arr[taskIndex] = name;
       }
-      if(priority){
+      if(!isNaN(Number(priority))){
         swapPriority(priority,taskIndex);
       }
       res.end('done');
