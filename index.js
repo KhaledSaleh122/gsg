@@ -2,9 +2,8 @@ import express, { json } from 'express';
 
 const app = express();
 app.use(json());
-const arr = [];
+const arr = [{"id":"4","name":"pee","priority":"4"}];
 let highestPriorty;
-
 app.get('/tasks',(req,res)=>{
   res.end(JSON.stringify(arr));
 })
@@ -15,11 +14,14 @@ app.post('/tasks',(req,res)=>{
     if(!isIdExists(id)){
       isPriorityExist(priority);
       arr.push({id,name,priority});
-      res.end("done");
+      res.end("Task Created Successfully.");
       return;
+    }else{
+      res.end("Task id exist");
     }
+  }else{
+    res.end("Please ensure you input all the data correctly");
   }
-  res.end("error");
 })
 
 app.get('/tasks/:id', (req, res, next) => {
@@ -29,9 +31,12 @@ app.get('/tasks/:id', (req, res, next) => {
       const taskIndex = arr.findIndex((obj)=> obj.id === id);
       res.end(JSON.stringify(arr[taskIndex]));
       return;
+    }else{
+      res.end('Task id not exist');
     }
+  }else{
+    res.end("Please ensure you input the id");
   }
-  res.end("error");
 });
 
 app.put('/tasks/:id',(req,res)=>{
@@ -43,14 +48,17 @@ app.put('/tasks/:id',(req,res)=>{
       if(name){
         arr[taskIndex].name = name;
       }
-      if(!isNaN(Number(priority))){
+      if(priority){
         swapPriority(priority,taskIndex);
       }
       res.end('done');
       return;
+    }else{
+      res.end('Task id not exist');
     }
+  }else{
+    res.end("Please ensure you input the id");
   }
-  res.end('error');
 })
 
 
@@ -62,9 +70,12 @@ app.delete('/tasks/:id',(req,res)=>{
       arr.splice(taskIndex,1);
       res.end('done');
       return;
+    }else{
+      res.end('Task id not exist');
     }
+  }else{
+    res.end("Please ensure you input the id");
   }
-  res.end('error');
 })
 
 
@@ -80,6 +91,7 @@ function swapPriority(priority,taskIndex){
   }else{
       arr[index].priority = arr[taskIndex].priority;
   }
+  console.log(arr);
   arr[taskIndex].priority = priority;
 }
 
