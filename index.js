@@ -65,7 +65,7 @@ app.delete('/tasks/:id',(req,res)=>{
     if(isIdExists(id)){
       const taskIndex = arr.findIndex((obj)=> obj.id === id);
       arr.splice(taskIndex,1);
-      res.end('done');
+      res.end('Task deleted successfully.');
     }else{
       res.end('Task id not exist');
     }
