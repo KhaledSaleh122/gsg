@@ -15,7 +15,6 @@ app.post('/tasks',(req,res)=>{
       isPriorityExist(priority);
       arr.push({id,name,priority});
       res.end("Task Created Successfully.");
-      return;
     }else{
       res.end("Task id exist");
     }
@@ -30,7 +29,6 @@ app.get('/tasks/:id', (req, res, next) => {
     if(isIdExists(id)){
       const taskIndex = arr.findIndex((obj)=> obj.id === id);
       res.end(JSON.stringify(arr[taskIndex]));
-      return;
     }else{
       res.end('Task id not exist');
     }
@@ -52,7 +50,6 @@ app.put('/tasks/:id',(req,res)=>{
         swapPriority(priority,taskIndex);
       }
       res.end('done');
-      return;
     }else{
       res.end('Task id not exist');
     }
@@ -69,7 +66,6 @@ app.delete('/tasks/:id',(req,res)=>{
       const taskIndex = arr.findIndex((obj)=> obj.id === id);
       arr.splice(taskIndex,1);
       res.end('done');
-      return;
     }else{
       res.end('Task id not exist');
     }
