@@ -30,14 +30,14 @@ const server = http.createServer(async (req, res) => {
             console.log(database);
             res.end(err.toString());
         }
-    } else if (req.method === "PUT" && req.url === "/tasks/:id") {
+    } else if (req.method === "PUT" && req.url.startsWith("/tasks/")) {
         let data = "";
         req.on("data", (d) => {
             data += d;
         }).on('end', () => {
             try{
                 const taskInfo = JSON.parse(data);
-                taskInfo.id = Number(taskInfo.id);
+                taskInfo.id = Number(req.url.split('/')[2]);
                 taskInfo.priority = Number(taskInfo.priority);
                 if (isNaN(taskInfo.id)) { throw "Please ensure you send the id." }
                 if(!isIdExists(taskInfo.id)){throw "This id is not exist"};
@@ -52,14 +52,24 @@ const server = http.createServer(async (req, res) => {
         })
     }else if (req.method === "GET" && req.url === "/tasks"){
         res.end(JSON.stringify(database));
-    }else if (req.method === "DELETE" && req.url === "/tasks/:id"){
+    }else if (req.method === "GET" && req.url.startsWith("/tasks/")){
+        try{
+            const id = Number(req.url.split('/')[2]);
+            if (isNaN(id)) { throw "Please ensure you send the id." }
+            if(!isIdExists(id)){throw "This id is not exist"};
+            const taskIndex = database.findIndex((obj)=> obj.id === id);
+            res.end(JSON.stringify(database[taskIndex]));
+        }catch(err){
+            res.end(err.toString());
+        }
+    }else if (req.method === "DELETE" && req.url.startsWith("/tasks/")){
         let data = "";
         req.on("data", (d) => {
             data += d;
         }).on('end', () => {
             try{
                 const taskInfo = JSON.parse(data);
-                taskInfo.id = Number(taskInfo.id);
+                taskInfo.id = Number(req.url.split('/')[2]);
                 if (isNaN(taskInfo.id)) { throw "Please ensure you send the id." }
                 if(!isIdExists(taskInfo.id)){throw "This id is not exist"};
                 const taskIndex = database.findIndex((obj)=> obj.id === taskInfo.id);
