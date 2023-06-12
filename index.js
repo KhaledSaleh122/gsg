@@ -41,7 +41,7 @@ app.put('/tasks/:id',(req,res)=>{
     if(isIdExists(id)){
       const taskIndex = arr.findIndex((obj)=> obj.id === id);
       if(name){
-        arr[taskIndex] = name;
+        arr[taskIndex].name = name;
       }
       if(!isNaN(Number(priority))){
         swapPriority(priority,taskIndex);
