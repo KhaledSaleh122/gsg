@@ -2,7 +2,7 @@ import express, { json } from 'express';
 
 const app = express();
 app.use(json());
-const arr = [{"id":"4","name":"pee","priority":"4"}];
+const arr = [];
 let highestPriorty;
 app.get('/tasks',(req,res)=>{
   res.end(JSON.stringify(arr));
