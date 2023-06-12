@@ -4,6 +4,7 @@ const app = express();
 app.use(json());
 const arr = [];
 let highestPriorty;
+
 app.get('/tasks',(req,res)=>{
   res.end(JSON.stringify(arr));
 })
